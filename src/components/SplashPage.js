@@ -5,7 +5,7 @@ import { FaCopy, FaWifi, FaKey } from 'react-icons/fa';
 import './SplashPage.css';
 
 function SplashPage() {
-  const { id } = useParams(); // Get the property ID from the URL
+  const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -15,9 +15,8 @@ function SplashPage() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState('');
 
-  // Fetch property details based on ID from URL
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/properties/${id}`) // Make sure the path matches your server route
+    axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
         if (response.data['backgroundImgs']) {
@@ -26,28 +25,24 @@ function SplashPage() {
       })
       .catch(() => setError('Error fetching property details'));
   }, [id]);
-  
 
-  // Validate the form
   useEffect(() => {
     const isValidEmail = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     setIsFormValid(firstName !== '' && lastName !== '' && isValidEmail);
   }, [firstName, lastName, email]);
 
-  // Clear the form fields
   const handleClear = () => {
     setFirstName('');
     setLastName('');
     setEmail('');
   };
 
-  // Handle the connect action
   const handleConnect = () => {
     const postData = { firstName, lastName, email };
 
-    axios.post('https://property-api-ajcn.onrender.com/api/connect', postData) // Make sure the path matches your server route
+    axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
       .then(() => {
-        return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`); // Refresh the property details
+        return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
       })
       .then(response => {
         if (response.data['wifi-details']) {
@@ -59,7 +54,6 @@ function SplashPage() {
       .catch(() => setError('Error connecting to the property'));
   };
 
-  // Copy text to clipboard
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
       .then(() => {
@@ -84,7 +78,6 @@ function SplashPage() {
           {splashPageData ? (
             <div>
               <h1 className="splash-title">{splashPageData.title}</h1>
-              
               <p className="splash-description">{splashPageData.description1}</p>
             </div>
           ) : (
