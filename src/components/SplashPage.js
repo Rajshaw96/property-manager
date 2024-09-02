@@ -16,7 +16,7 @@ function SplashPage() {
   const [backgroundImg, setBackgroundImg] = useState('');
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/properties/${id}`)
+    axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
         if (response.data['backgroundImgs']) {
@@ -40,9 +40,9 @@ function SplashPage() {
   const handleConnect = () => {
     const postData = { firstName, lastName, email };
 
-    axios.post('http://localhost:8000/connect', postData)
+    axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
       .then(() => {
-        return axios.get(`http://localhost:8000/properties/${id}`);
+        return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
       })
       .then(response => {
         if (response.data['wifi-details']) {

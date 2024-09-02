@@ -10,7 +10,7 @@ function PropertyDetails() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/properties/${id}`)
+    axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
       })

@@ -12,7 +12,7 @@ function PropertyGrid() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/properties").then((response) => {
+    axios.get("https://property-api-ajcn.onrender.com/api/properties").then((response) => {
       setProperties(response.data);
     });
   }, []);
@@ -30,7 +30,7 @@ function PropertyGrid() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:8000/properties/${id}`).then(() => {
+    axios.delete(`https://property-api-ajcn.onrender.com/api/properties/${id}`).then(() => {
       setProperties(properties.filter((property) => property.id !== id));
     });
   };

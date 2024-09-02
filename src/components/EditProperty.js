@@ -15,7 +15,7 @@ function EditProperty() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/properties/${id}`)
+    axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
         setTitle(response.data.title);
@@ -35,7 +35,7 @@ function EditProperty() {
       price: { amount },
     };
 
-    axios.put(`http://localhost:8000/properties/${id}`, updatedProperty)
+    axios.put(`https://property-api-ajcn.onrender.com/api/properties/${id}`, updatedProperty)
       .then(() => {
         navigate(`/property-details/${id}`);
       })
