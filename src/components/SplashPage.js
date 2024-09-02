@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { FaCopy, FaWifi, FaCheck, FaListUl, FaKey, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCopy, FaWifi, FaCheck, FaListUl, FaKey } from 'react-icons/fa';
 import './SplashPage.css';
 
 function SplashPage() {
-  const { id } = useParams();
+  const { id } = useParams(); // id here should be _id
   const [property, setProperty] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -45,8 +45,8 @@ function SplashPage() {
         return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
       })
       .then(response => {
-        if (response.data['wifi-details']) {
-          setWifiDetails(response.data['wifi-details']);
+        if (response.data['wifi_details']) { // Ensure the property has 'wifi_details'
+          setWifiDetails(response.data['wifi_details']);
         } else {
           setError('No WiFi details found');
         }
@@ -64,7 +64,7 @@ function SplashPage() {
       });
   };
 
-  const splashPageData = property && property['splash-page'] && property['splash-page'][0];
+  const splashPageData = property && property['splash_page'] && property['splash_page'][0];
 
   return (
     <div className="splash-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
@@ -125,7 +125,7 @@ function SplashPage() {
                 <FaCopy className="copy-icon" onClick={() => copyToClipboard(wifiDetails.wifiName)} />
               </div>
               <div className="wifi-detail-item">
-                <p><strong><FaKey className="step-icon" />Wifi Password:</strong> {wifiDetails.wifiPassword}</p>
+                <p><strong><FaKey className="steps-icon" /> Wifi Password:</strong> {wifiDetails.wifiPassword}</p>
                 <FaCopy className="copy-icon" onClick={() => copyToClipboard(wifiDetails.wifiPassword)} />
               </div>
             </div>
@@ -134,17 +134,17 @@ function SplashPage() {
 
         {/* <div className="wifi-steps">
           <h3><FaWifi className="steps-icon" /> How to Connect to Wi-Fi:</h3>
-          <p><FaListUl className="step-icon" /> Open your device's Wi-Fi settings.</p>
-          <p><FaWifi className="step-icon" /> Select the Wi-Fi network from the list.</p>
-          <p><FaKey className="step-icon" /> Enter the provided Wi-Fi password.</p>
-          <p><FaCheck className="step-icon" /> Connect to the network and enjoy browsing!</p>
+          <p><FaListUl className="steps-icon" /> Open your device's Wi-Fi settings.</p>
+          <p><FaWifi className="steps-icon" /> Select the Wi-Fi network from the list.</p>
+          <p><FaKey className="steps-icon" /> Enter the provided Wi-Fi password.</p>
+          <p><FaCheck className="steps-icon" /> Connect to the network and enjoy browsing!</p>
         </div> */}
       </div>
 
       <footer className="splash-footer">
         <p>&copy; {new Date().getFullYear()} <strong>Linkbase Technologies Inc.</strong> All Rights Reserved.</p>
         <p>
-          <a href="https://linkbase.ca/privacy-and-policy" target='_blanck'>Privacy Policy</a> | <a href="https://linkbase.ca/terms-of-service" target='_blanck'>Terms & Conditions</a>
+          <a href="https://linkbase.ca/privacy-and-policy" target='_blank' rel="noopener noreferrer">Privacy Policy</a> | <a href="https://linkbase.ca/terms-of-service" target='_blank' rel="noopener noreferrer">Terms & Conditions</a>
         </p>
       </footer>
     </div>
