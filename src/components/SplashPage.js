@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { FaCopy, FaWifi, FaCheck, FaListUl, FaKey } from 'react-icons/fa';
+import { FaCopy, FaWifi, FaKey } from 'react-icons/fa';
 import './SplashPage.css';
 
 function SplashPage() {
@@ -19,6 +19,7 @@ function SplashPage() {
     axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
+        // Use 'backgroundImgs' from property if available
         if (response.data['backgroundImgs']) {
           setBackgroundImg(response.data['backgroundImgs']);
         }
@@ -132,6 +133,7 @@ function SplashPage() {
           )}
         </div>
 
+        {/* Commented out section */}
         {/* <div className="wifi-steps">
           <h3><FaWifi className="steps-icon" /> How to Connect to Wi-Fi:</h3>
           <p><FaListUl className="steps-icon" /> Open your device's Wi-Fi settings.</p>
