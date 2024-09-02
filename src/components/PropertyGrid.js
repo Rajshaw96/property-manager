@@ -38,7 +38,7 @@ function PropertyGrid() {
 
   const handleDelete = (id) => {
     axios.delete(`https://property-api-ajcn.onrender.com/api/properties/${id}`).then(() => {
-      setProperties(properties.filter((property) => property.id !== id));
+      setProperties(properties.filter((property) => property._id !== id));
     }).catch(error => {
       console.error("Error deleting property:", error);
     });
@@ -77,28 +77,28 @@ function PropertyGrid() {
         <tbody>
           {currentProperties.length > 0 ? (
             currentProperties.map((property) => (
-              <tr key={property.id}>
-                <td>{property.id}</td>
+              <tr key={property._id}>
+                <td>{property._id}</td>
                 <td>{property.title || 'N/A'}</td> {/* Add fallback */}
                 <td>{property.location?.city || 'N/A'}</td> {/* Add fallback */}
                 <td>{property.location?.state || 'N/A'}</td> {/* Add fallback */}
                 <td>{property.location?.country || 'N/A'}</td> {/* Add fallback */}
                 <td>${property.price?.amount?.toLocaleString() || 'N/A'}</td> {/* Add fallback */}
                 <td>
-                  <Link to={`/property-details/${property.id}`} className="action-button">
+                  <Link to={`/property-details/${property._id}`} className="action-button">
                     <FaEye /> {/* View icon */}
                   </Link>
-                  <Link to={`/edit-property/${property.id}`} className="action-button">
+                  <Link to={`/edit-property/${property._id}`} className="action-button">
                     <FaEdit /> {/* Edit icon */}
                   </Link>
                   <button 
                     className="action-button delete-button"
-                    onClick={() => handleDelete(property.id)}
+                    onClick={() => handleDelete(property._id)}
                   >
                     <FaTrash /> {/* Delete icon */}
                   </button>
                   <QRCodeComponent
-                    id={property.id}
+                    id={property._id}
                     size={64}
                   />
                 </td>
