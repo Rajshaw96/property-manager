@@ -2,14 +2,14 @@ import React from 'react';
 import { QRCodeCanvas } from 'qrcode.react'; // Use the named import
 
 const QRCodeComponent = ({ id, size = 64 }) => {
-const url = `https://property-manager-j6d4.onrender.com/splash-page/${id}`;
+  const baseURL = process.env.REACT_APP_BASE_URL; // Retrieve base URL from environment variables
+  const url = `${baseURL}/splash-page/${id}`;
 
-return (
+  return (
     <div className="qr-code">
       <QRCodeCanvas value={url} size={size} />
     </div>
-);
-
+  );
 };
 
 export default QRCodeComponent;
