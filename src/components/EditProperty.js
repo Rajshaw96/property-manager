@@ -4,7 +4,7 @@ import axios from 'axios';
 import './EditProperty.css'; // Ensure this file is created for styling
 
 function EditProperty() {
-  const { id } = useParams();
+  const { id } = useParams(); // id here should be _id
   const navigate = useNavigate();
   const [property, setProperty] = useState(null);
   const [title, setTitle] = useState('');
@@ -18,11 +18,11 @@ function EditProperty() {
     axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
         setProperty(response.data);
-        setTitle(response.data.title);
-        setCity(response.data.location.city);
-        setState(response.data.location.state);
-        setCountry(response.data.location.country);
-        setAmount(response.data.price.amount);
+        setTitle(response.data.title || '');
+        setCity(response.data.location?.city || '');
+        setState(response.data.location?.state || '');
+        setCountry(response.data.location?.country || '');
+        setAmount(response.data.price?.amount || '');
       })
       .catch(() => setError('Error fetching property details'));
   }, [id]);
