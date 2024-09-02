@@ -14,14 +14,21 @@ function PropertyGrid() {
   useEffect(() => {
     axios.get("https://property-api-ajcn.onrender.com/api/properties").then((response) => {
       setProperties(response.data);
+    }).catch(error => {
+      console.error("Error fetching properties:", error);
     });
   }, []);
 
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
-  const filteredProperties = properties.filter((property) =>
-    property.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  // Add defensive checks here
+  const filteredProperties = properties.filter((property) => {
+    const title = property.title ? property.title.toLowerCase() : '';
+    const search = searchTerm.toLowerCase();
+    return title.includes(search);
+  });
+
   const currentProperties = filteredProperties.slice(
     indexOfFirstProperty,
     indexOfLastProperty
@@ -32,6 +39,8 @@ function PropertyGrid() {
   const handleDelete = (id) => {
     axios.delete(`https://property-api-ajcn.onrender.com/api/properties/${id}`).then(() => {
       setProperties(properties.filter((property) => property.id !== id));
+    }).catch(error => {
+      console.error("Error deleting property:", error);
     });
   };
 
@@ -70,11 +79,11 @@ function PropertyGrid() {
             currentProperties.map((property) => (
               <tr key={property.id}>
                 <td>{property.id}</td>
-                <td>{property.title}</td>
-                <td>{property.location.city}</td>
-                <td>{property.location.state}</td>
-                <td>{property.location.country}</td>
-                <td>${property.price.amount.toLocaleString()}</td>
+                <td>{property.title || 'N/A'}</td> {/* Add fallback */}
+                <td>{property.location?.city || 'N/A'}</td> {/* Add fallback */}
+                <td>{property.location?.state || 'N/A'}</td> {/* Add fallback */}
+                <td>{property.location?.country || 'N/A'}</td> {/* Add fallback */}
+                <td>${property.price?.amount?.toLocaleString() || 'N/A'}</td> {/* Add fallback */}
                 <td>
                   <Link to={`/property-details/${property.id}`} className="action-button">
                     <FaEye /> {/* View icon */}
