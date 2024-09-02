@@ -85,6 +85,9 @@ function PropertyGrid() {
                 <td>{property.location?.country || 'N/A'}</td> {/* Add fallback */}
                 <td>${property.price?.amount?.toLocaleString() || 'N/A'}</td> {/* Add fallback */}
                 <td>
+                  <Link to={`/splash-page/${property._id}`} className="action-button">
+                    <FaEye /> {/* View icon */}
+                  </Link>                  
                   <Link to={`/property-details/${property._id}`} className="action-button">
                     <FaEye /> {/* View icon */}
                   </Link>
