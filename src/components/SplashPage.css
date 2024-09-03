@@ -190,11 +190,6 @@
     flex-direction: column;
     padding: 10px;
   }
-  .splash-container {
-    height: auto; /* Allow the container height to adjust based on content */
-    min-height: 100vh; /* Ensure it covers the full viewport height */
-    padding: 10px; /* Add some padding for better spacing */
-  }
 
   .name-fields {
     flex-direction: column;
