@@ -185,55 +185,15 @@
   text-decoration: underline;
 }
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
   .splash-content {
-    height: 100vh;
     flex-direction: column;
     padding: 10px;
-  } */
-
-  @media (max-width: 768px) {
-    .splash-container {
-      height: auto; /* Allow the container height to adjust based on content */
-      min-height: 100vh; /* Ensure it covers the full viewport height */
-      padding: 10px; /* Add some padding for better spacing */
-      background-size: contain; /* Adjust background size for mobile screens */
-    }
-  
-    .form-container {
-      width: 100%; /* Make form container full width */
-      padding: 0 10px; /* Add padding for better spacing */
-    }
-  
-    .splash-nav {
-      text-align: center; /* Center the logo */
-    }
-  
-    .splash-title {
-      font-size: 1.5em; /* Adjust title size for mobile */
-    }
-  
-    .splash-description {
-      font-size: 1em; /* Adjust description size for mobile */
-    }
-  
-    .input-field {
-      width: 100%; /* Make input fields full width */
-      margin-bottom: 10px; /* Add margin between input fields */
-    }
-  
-    .button-group {
-      display: flex;
-      flex-direction: column; /* Stack buttons vertically */
-    }
-  
-    .splash-button {
-      margin-bottom: 10px; /* Add margin between buttons */
-    }
-  
-    .wifi-details {
-      padding: 0 10px; /* Add padding for better spacing */
-    }
+  }
+  .splash-container {
+    height: auto; /* Allow the container height to adjust based on content */
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    padding: 10px; /* Add some padding for better spacing */
   }
 
   .name-fields {
@@ -249,3 +209,4 @@
     flex-direction: column;
     gap: 10px;
   }
+}
