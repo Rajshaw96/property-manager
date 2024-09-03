@@ -132,14 +132,6 @@ function SplashPage() {
           )}
         </div>
       </div>
-
-      <footer className="splash-footer">
-        <p>&copy; {new Date().getFullYear()} <strong>Linkbase Technologies Inc.</strong> All Rights Reserved.</p>
-        <p>
-          <a href="https://linkbase.ca/privacy-and-policy" target='_blank' rel='noopener noreferrer'>Privacy Policy</a> | 
-          <a href="https://linkbase.ca/terms-of-service" target='_blank' rel='noopener noreferrer'>Terms & Conditions</a>
-        </p>
-      </footer>
     </div>
   );
 }

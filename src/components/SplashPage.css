@@ -37,7 +37,7 @@
 }
 
 .form-container {
-  width: 35%; /* Set width to 40% */
+  width: 45%; /* Set width to 40% */
   background-color: rgba(255, 255, 255, 0.8); /* Slightly more opaque */
   padding: 20px;
   border-radius: 8px;
@@ -46,12 +46,14 @@
 }
 
 .splash-title {
+  text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
   color: #333;
 }
 
 .splash-description {
+  text-align: center;
   margin-bottom: 20px;
   color: #666;
 }
