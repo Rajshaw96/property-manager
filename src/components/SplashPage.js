@@ -18,10 +18,17 @@ function SplashPage() {
   useEffect(() => {
     axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
-        setProperty(response.data);
-        if (response.data['backgroundImgs']) {
-          setBackgroundImg(response.data['backgroundImgs']);
+        const data = response.data;
+        setProperty(data);
+        
+        if (data.backgroundImgs) {
+          setBackgroundImg(data.backgroundImgs);
         }
+
+        if (data.wifi_details) {
+          setWifiDetails(data.wifi_details);
+        }
+
       })
       .catch(() => setError('Error fetching property details'));
   }, [id]);
@@ -45,8 +52,8 @@ function SplashPage() {
         return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
       })
       .then(response => {
-        if (response.data['wifi-details']) {
-          setWifiDetails(response.data['wifi-details']);
+        if (response.data.wifi_details) {
+          setWifiDetails(response.data.wifi_details);
         } else {
           setError('No WiFi details found');
         }
@@ -64,7 +71,7 @@ function SplashPage() {
       });
   };
 
-  const splashPageData = property && property['splash-page'] && property['splash-page'][0];
+  const splashPageData = property && property.splash_page && property.splash_page[0];
 
   return (
     <div className="splash-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
