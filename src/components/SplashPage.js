@@ -18,17 +18,10 @@ function SplashPage() {
   useEffect(() => {
     axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
       .then(response => {
-        const data = response.data;
-        setProperty(data);
-        
-        if (data.backgroundImgs) {
-          setBackgroundImg(data.backgroundImgs);
+        setProperty(response.data);
+        if (response.data.backgroundImgs) {
+          setBackgroundImg(response.data.backgroundImgs);
         }
-
-        if (data.wifi_details) {
-          setWifiDetails(data.wifi_details);
-        }
-
       })
       .catch(() => setError('Error fetching property details'));
   }, [id]);
