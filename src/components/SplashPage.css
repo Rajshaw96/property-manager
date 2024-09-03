@@ -191,6 +191,13 @@
     padding: 10px;
   }
 
+  .form-container,
+  .wifi-steps {
+    width: 90%;
+    margin: 10px auto;
+    margin-top: 40px !important;
+  }
+
   .name-fields {
     flex-direction: column;
   }
