@@ -112,7 +112,6 @@ function SplashPage() {
               className="input-field full-width"
             />
             <div className="button-group">
-              <button type="button" onClick={handleClear} className="splash-button clear-button">Clear</button>
               <button type="button" onClick={handleConnect} disabled={!isFormValid} className="splash-button connect-button">Quick Connect</button>
             </div>
           </form>
