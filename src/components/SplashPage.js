@@ -15,17 +15,32 @@ function SplashPage() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState('');
 
+  // Fetch property details and Wi-Fi data from API
   useEffect(() => {
-    axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
-      .then(response => {
-        setProperty(response.data);
-        if (response.data.backgroundImgs) {
-          setBackgroundImg(response.data.backgroundImgs);
-        }
-      })
-      .catch(() => setError('Error fetching property details'));
+    if (navigator.onLine) {
+      axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
+        .then(response => {
+          setProperty(response.data);
+          if (response.data.backgroundImgs) {
+            setBackgroundImg(response.data.backgroundImgs);
+          }
+          // Save property data to local storage for offline access
+          localStorage.setItem(`property_${id}`, JSON.stringify(response.data));
+        })
+        .catch(() => setError('Error fetching property details'));
+    } else {
+      // Offline: Load data from local storage
+      const savedProperty = localStorage.getItem(`property_${id}`);
+      if (savedProperty) {
+        setProperty(JSON.parse(savedProperty));
+        setError(null); // Clear error if data is found
+      } else {
+        setError('No data available offline.');
+      }
+    }
   }, [id]);
 
+  // Form validation
   useEffect(() => {
     const isValidEmail = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     setIsFormValid(firstName !== '' && lastName !== '' && isValidEmail);
@@ -40,18 +55,32 @@ function SplashPage() {
   const handleConnect = () => {
     const postData = { firstName, lastName, email };
 
-    axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
-      .then(() => {
-        return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
-      })
-      .then(response => {
-        if (response.data.wifi_details) {
-          setWifiDetails(response.data.wifi_details);
-        } else {
-          setError('No WiFi details found');
-        }
-      })
-      .catch(() => setError('Error connecting to the property'));
+    if (navigator.onLine) {
+      // Online: Post form data and fetch Wi-Fi details
+      axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
+        .then(() => {
+          return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
+        })
+        .then(response => {
+          if (response.data.wifi_details) {
+            setWifiDetails(response.data.wifi_details);
+            // Save Wi-Fi details to local storage
+            localStorage.setItem(`wifiDetails_${id}`, JSON.stringify(response.data.wifi_details));
+          } else {
+            setError('No WiFi details found');
+          }
+        })
+        .catch(() => setError('Error connecting to the property'));
+    } else {
+      // Offline: Save form data locally and retrieve Wi-Fi details from local storage
+      localStorage.setItem('formData', JSON.stringify(postData));
+      const savedWifiDetails = localStorage.getItem(`wifiDetails_${id}`);
+      if (savedWifiDetails) {
+        setWifiDetails(JSON.parse(savedWifiDetails));
+      } else {
+        setError('No WiFi details available offline.');
+      }
+    }
   };
 
   const copyToClipboard = (text) => {

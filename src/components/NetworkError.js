@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './NetworkError.css';
 
 const NetworkError = () => {
-  return (
-    <div className="network-error-container">
-      <h1>Network Error</h1>
-      <p>There was a problem connecting to the server. Please check your internet connection or try again later.</p>
-    </div>
-  );
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    window.addEventListener('online', () => setIsOnline(true));
+    window.addEventListener('offline', () => setIsOnline(false));
+
+    return () => {
+      window.removeEventListener('online', () => setIsOnline(true));
+      window.removeEventListener('offline', () => setIsOnline(false));
+    };
+  }, []);
+
+  return !isOnline ? <div>You are offline</div> : null;
 };
 
 export default NetworkError;
