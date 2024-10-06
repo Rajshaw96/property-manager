@@ -87,6 +87,8 @@ function SplashPage() {
     } else {
       // Offline: Save form data locally
       localStorage.setItem('formData', JSON.stringify(postData));
+
+      // Immediately retrieve and show saved Wi-Fi details if they exist
       const savedWifiDetails = localStorage.getItem(`wifiDetails_${id}`);
       if (savedWifiDetails) {
         setWifiDetails(JSON.parse(savedWifiDetails));
@@ -136,7 +138,6 @@ function SplashPage() {
                 onChange={e => setFirstName(e.target.value)}
                 required
                 className="input-field"
-                disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
               />
               <input
                 type="text"
@@ -145,7 +146,6 @@ function SplashPage() {
                 onChange={e => setLastName(e.target.value)}
                 required
                 className="input-field"
-                disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
               />
             </div>
             <input
@@ -155,14 +155,13 @@ function SplashPage() {
               onChange={e => setEmail(e.target.value)}
               required
               className="input-field full-width"
-              disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
             />
             <div className="button-group">
-            <button type="button" onClick={handleConnect} 
-              disabled={!isFormValid && navigator.onLine} // Only disable if form is invalid and online
-              className="splash-button connect-button">
-              Quick Connect
-            </button>
+              <button type="button" onClick={handleConnect} 
+                disabled={!isFormValid && navigator.onLine} // Only disable if form is invalid and online
+                className="splash-button connect-button">
+                Quick Connect
+              </button>
             </div>
           </form>
 
