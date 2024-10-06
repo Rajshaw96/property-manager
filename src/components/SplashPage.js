@@ -18,7 +18,19 @@ function SplashPage() {
 
   // Handle online/offline status changes
   useEffect(() => {
-    const updateOnlineStatus = () => setOfflineMode(!navigator.onLine);
+    const updateOnlineStatus = () => {
+      setOfflineMode(!navigator.onLine);
+      if (navigator.onLine) {
+        // If coming back online, check for local data to post
+        const savedFormData = localStorage.getItem('formData');
+        if (savedFormData) {
+          const { firstName, lastName, email } = JSON.parse(savedFormData);
+          handlePostData({ firstName, lastName, email });
+          localStorage.removeItem('formData'); // Clear saved form data after posting
+        }
+      }
+    };
+
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
 
@@ -70,25 +82,10 @@ function SplashPage() {
 
     if (navigator.onLine) {
       // Online: Post form data and fetch Wi-Fi details
-      axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
-        .then(() => {
-          return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
-        })
-        .then(response => {
-          if (response.data.wifi_details) {
-            setWifiDetails(response.data.wifi_details);
-            // Save Wi-Fi details to local storage
-            localStorage.setItem(`wifiDetails_${id}`, JSON.stringify(response.data.wifi_details));
-          } else {
-            setError('No WiFi details found');
-          }
-        })
-        .catch(() => setError('Error connecting to the property'));
+      handlePostData(postData);
     } else {
       // Offline: Save form data locally
       localStorage.setItem('formData', JSON.stringify(postData));
-
-      // Immediately retrieve and show saved Wi-Fi details if they exist
       const savedWifiDetails = localStorage.getItem(`wifiDetails_${id}`);
       if (savedWifiDetails) {
         setWifiDetails(JSON.parse(savedWifiDetails));
@@ -96,6 +93,23 @@ function SplashPage() {
         setError('No WiFi details available offline.');
       }
     }
+  };
+
+  const handlePostData = (postData) => {
+    axios.post('https://property-api-ajcn.onrender.com/api/connect', postData)
+      .then(() => {
+        return axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`);
+      })
+      .then(response => {
+        if (response.data.wifi_details) {
+          setWifiDetails(response.data.wifi_details);
+          // Save Wi-Fi details to local storage
+          localStorage.setItem(`wifiDetails_${id}`, JSON.stringify(response.data.wifi_details));
+        } else {
+          setError('No WiFi details found');
+        }
+      })
+      .catch(() => setError('Error connecting to the property'));
   };
 
   const copyToClipboard = (text) => {
@@ -138,6 +152,7 @@ function SplashPage() {
                 onChange={e => setFirstName(e.target.value)}
                 required
                 className="input-field"
+                disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
               />
               <input
                 type="text"
@@ -146,6 +161,7 @@ function SplashPage() {
                 onChange={e => setLastName(e.target.value)}
                 required
                 className="input-field"
+                disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
               />
             </div>
             <input
@@ -155,6 +171,7 @@ function SplashPage() {
               onChange={e => setEmail(e.target.value)}
               required
               className="input-field full-width"
+              disabled={offlineMode ? false : false} // Ensure it's not disabled when offline
             />
             <div className="button-group">
               <button type="button" onClick={handleConnect} 
