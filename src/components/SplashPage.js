@@ -14,8 +14,21 @@ function SplashPage() {
   const [error, setError] = useState(null);
   const [isFormValid, setIsFormValid] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState('');
+  const [offlineMode, setOfflineMode] = useState(!navigator.onLine); // Detect offline mode
 
-  // Fetch property details and Wi-Fi data from API
+  // Handle online/offline status changes
+  useEffect(() => {
+    const updateOnlineStatus = () => setOfflineMode(!navigator.onLine);
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    return () => {
+      window.removeEventListener('online', updateOnlineStatus);
+      window.removeEventListener('offline', updateOnlineStatus);
+    };
+  }, []);
+
+  // Fetch property details and Wi-Fi data from API or local storage
   useEffect(() => {
     if (navigator.onLine) {
       axios.get(`https://property-api-ajcn.onrender.com/api/properties/${id}`)
@@ -72,7 +85,7 @@ function SplashPage() {
         })
         .catch(() => setError('Error connecting to the property'));
     } else {
-      // Offline: Save form data locally and retrieve Wi-Fi details from local storage
+      // Offline: Save form data locally
       localStorage.setItem('formData', JSON.stringify(postData));
       const savedWifiDetails = localStorage.getItem(`wifiDetails_${id}`);
       if (savedWifiDetails) {
@@ -104,6 +117,7 @@ function SplashPage() {
       <div className="splash-content">
         <div className="form-container">
           {error && <p className="error-message">{error}</p>}
+          {offlineMode && <p className="offline-message">You are currently offline. Data will be saved locally and submitted when you're back online.</p>}
           {splashPageData ? (
             <div>
               <h1 className="splash-title">{splashPageData.title}</h1>
@@ -153,7 +167,7 @@ function SplashPage() {
                 <FaCopy className="copy-icon" onClick={() => copyToClipboard(wifiDetails.wifiName)} />
               </div>
               <div className="wifi-detail-item">
-                <p><strong><FaKey className="steps-icon" />Wifi Password:</strong> {wifiDetails.wifiPassword}</p>
+                <p><strong><FaKey className="steps-icon" /> Wifi Password:</strong> {wifiDetails.wifiPassword}</p>
                 <FaCopy className="copy-icon" onClick={() => copyToClipboard(wifiDetails.wifiPassword)} />
               </div>
             </div>
