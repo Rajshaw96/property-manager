@@ -46,7 +46,7 @@ function PropertyGrid() {
 
   return (
     <div className="property-grid">
-      <h1>Property Listings</h1>
+      <h1>All Property List</h1>
       <div className="search-container">
         <input
           type="text"
